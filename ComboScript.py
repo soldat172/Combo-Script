@@ -3,7 +3,6 @@ from openpyxl import Workbook
 from tkinter import filedialog, Tk
 from guizero import App, Text, TextBox, PushButton, Window
 
-#-------------------------------------------------------------------
 global siteName
 global apPrefix
 global apNumber
@@ -38,21 +37,18 @@ baseX=1920 #The base resolution at which the sample "clicks" were made from
 baseY=1200 #The base resolution at which the sample "clicks" were made from
 newX,newY = pyautogui.size() #Finds current monitor resolution
 
-#-------------------------------------------------------------------
-
 if baseX != newX:
-    multiplierX = 1.2786 #Hard Code
-    multiplierY = 1.1535 #Hard Code
-    multiplierX2 = 1.4481 #Hard Code
-    multiplierY2 = 1.1012 #Hard Code
+    multiplierX = 1.2786 #1920 X 1200 Hard Code
+    multiplierY = 1.1535 #1920 X 1200 Hard Code
+    multiplierX2 = 1.4481 #2560 X 1440 Hard Code
+    multiplierY2 = 1.1012 #2560 X 1440 Hard Code
 else:
-    multiplierX = newX/baseX #Finds how mucher bigger/smaller the "x" resolution is
-    multiplierY = newY/baseY #Finds how mucher bigger/smaller the "y" resolution is
-    multiplierX2 = newX/baseX #Hard Code
-    multiplierY2 = newY/baseY #Hard Code
+    multiplierX = newX/baseX #1920 X 1200 finds how mucher bigger/smaller the "x" resolution is
+    multiplierY = newY/baseY #1920 X 1200 finds how mucher bigger/smaller the "y" resolution is
+    multiplierX2 = newX/baseX #2560 X 1440 finds how mucher bigger/smaller the "x" resolution is
+    multiplierY2 = newY/baseY #2560 X 1440 finds how mucher bigger/smaller the "y" resolution is
 
-#The location of the button is multiplied by the change in resolution 
-#so that this program works on any resolution
+#The location of the button is multiplied by the change in resolution so that this program works on any resolution
 nextButtonX = 1152 * multiplierX #X Location of the "next" button while using DataExtraction
 nextButtonY = 775 * multiplierY #Y Location of the "next" button while using DataExtraction
 desktopButtonX = 703 * multiplierX2 #X Location of the "desktop icon" button while using DataExtraction
@@ -60,14 +56,11 @@ desktopButtonY = 652 * multiplierY2 #Y Location of the "desktop icon" button whi
 saveButtonX = 1231 * multiplierX #X Location of the "save" button while using DataExtraction
 saveButtonY = 775 * multiplierY #Y Location of the "save" button while using DataExtraction
 
-#-------------------------------------------------------------------
-
 def startWorkbook ():#Starts an excel. Required for visioTool.
     global wb
     wb = Workbook()
     global ws
     ws = wb.active
-    #visioLoop()
 
 def openFiles():#Opens file explorer
     global excelName
@@ -83,7 +76,6 @@ def pause(): #Pause logic
         time.sleep(.3)
         exit
     else: #If pause has not been pressed then loop repeats infinitely WOO
-        #time.sleep(.3)
         pause()
         
 def theGUI(): #all the GUI stuff
@@ -105,18 +97,16 @@ def theGUI(): #all the GUI stuff
         print('Site name changed to ' + siteName)
         changingText.value = "Site changed to " + siteName #Text for changing site name
 
-    def repeat ():
+    def repeat (): #Causes script to loop infinitely
         theCreator()
         theGUI()
-        print ('please')
         
-    def directions():
+    def directions(): #Once "Go?" has been pressed execute the following items
         startWorkbook()
         openFiles()
         app.hide()
         visioLoop()
         repeat()
-        print ('hmm')
         
     app = App(title = "Phoenix_Oath", width=352, height=132, layout='grid')
 
@@ -161,57 +151,56 @@ def visioLoop():
     while True:
         keyPress = keyboard.read_key() #reads ALL keypress's and saves to variable
         
-        if keyPress == '`' :
+        if keyPress == '`' : #Adds a Default Ap to cutsheet
             apName = str(apPrefix) + str(formatNumber)
             visioGuts ()
             
-        elif keyPress == 's':
+        elif keyPress == 's': #Adds a Standup Ap to cutsheet
             apName = str(apPrefix) + str(formatNumber) + 'S'
             visioGuts ()
             
-        elif keyPress == 'g' :
+        elif keyPress == 'g' : #Adds a Guard Shack Ap to cutsheet
             apName = str(apPrefix) + str(formatNumber) + 'G'
             visioGuts ()
             
-        elif keyPress == 'm' :
+        elif keyPress == 'm' : #Adds a MOD/KIVA Ap to cutsheet
             apName = str(apPrefix) + str(formatNumber) + 'M'
             visioGuts ()
             
-        elif keyPress == 'h' :
+        elif keyPress == 'h' : #Adds a High Racking Ap to cutsheet
             apName = str(apPrefix) + str(formatNumber) + 'H'
             visioGuts ()
             
-        elif keyPress == 'd' :
+        elif keyPress == 'd' : #Adds a Door Ap to cutsheet
             apName = str(apPrefix) + str(formatNumber) + 'D'
             visioGuts ()
 
-        elif keyPress == 'e' :
+        elif keyPress == 'e' : #Adds a External Ap to cutsheet
             apName = str(apPrefix) + str(formatNumber) + 'E'
             visioGuts ()
             
-        elif keyPress == '[':  #goes down one ap number.
+        elif keyPress == '[': #goes down one ap number.
             apNumber -= 1
             excelStartingInteger -= 1
             formatNumber = format(apNumber, '05')
             apName = str(apPrefix) + str(formatNumber)
             print (apName)
 
-        elif keyPress == ']':  #goes up one ap number.    
+        elif keyPress == ']': #goes up one ap number.    
             apNumber += 1
             excelStartingInteger += 1
             formatNumber = format(apNumber, '05')
             apName = str(apPrefix) + str(formatNumber)
             print (apName)
             
-        elif keyPress == 'pause': #Well it pauses or unpauses everthing.....
+        elif keyPress == 'pause': #Well it pauses everthing.....
             print('paused')
             time.sleep(.3)
-            pause()
+            pause() #Program is stuck in the pause loop until pause is pressed again
 
 
-        elif keyPress == '=': #ends the Visio Tool   
+        elif keyPress == '=': #Saves the CAD Cutsheet and ends the Visio Tool   
             saveExcel()
-            print('test')
             break
 
 def theCreator():
@@ -223,6 +212,7 @@ def theCreator():
         
         #Saves Visio drawing as a CAD drawing
         if keyPress == '[' : #What key needs to be pressed to activate the "if" statement
+            print('Saving as CAD drawing')
             pyautogui.hotkey('alt', 'f2',interval=.1)
             pyautogui.moveTo(500, 100) #Moves mouse in order to avoid highlighting and messing up the proccess
             pyautogui.typewrite ('Coord ' + (currentTime),interval=.1) #Name of file saved
@@ -233,6 +223,7 @@ def theCreator():
 
         #Scales up CAD to drawing units
         if keyPress == ']' : #What key needs to be pressed to activate the "if" statement
+            print('Scaling up CAD')
             pyautogui.press('esc',interval=.1)
             pyautogui.hotkey('ctrlleft', 'a',interval=.1)
             pyautogui.typewrite ('scale',interval=.1)
@@ -242,6 +233,7 @@ def theCreator():
             pyautogui.typewrite('12', interval=.1) #How much to scale up
             pyautogui.press('enter',interval=.1)
             pyautogui.press ('esc',interval=.5) #Data extraction portion, from here down
+            print('doing data extraction')
             pyautogui.typewrite ('dataextraction',interval=.02)
             pyautogui.press ('enter',interval=actionDelay)
             pyautogui.click(x= nextButtonX , y= nextButtonY ,interval=clickDelay)
@@ -276,15 +268,15 @@ def theCreator():
             pyautogui.click(x= desktopButtonX , y= desktopButtonY ,interval=clickDelay)
             pyautogui.click(x= saveButtonX , y= saveButtonY ,interval=clickDelay)
             pyautogui.click(x= nextButtonX , y= nextButtonY ,clicks=2,interval=clickDelay)
+            print('done')
 
-        elif keyPress == '\\':
+        elif keyPress == '\\': #This exits out of the loop allowing the GUI to open and start the Visio Tool
             break       
 
-        elif keyPress == 'pause': #Well it pauses or unpauses everthing.....
+        elif keyPress == 'pause': #Well it pauses everthing.....
             print('paused')
             time.sleep(.3)
-            pause()
+            pause() #Program is stuck in the pause loop until pause is pressed again
             
 theCreator() #First call of program
-theGUI()
-print('should not be here')
+theGUI() #Once '\' has been pressed this will be the next call
