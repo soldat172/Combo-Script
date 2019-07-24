@@ -1,0 +1,21 @@
+The COMBO SCRIPT currently has functionality for 2 processes:
+At the start, a while loop asks the user what program to run
+    1. VISIO NAMING TOOL
+        This code is pretty much taken from the older installment of the ComboScript.py file. 
+        However, now it only operates to be the Visio naming tool.
+        This File is IMPORTED into the Combo Script 2.1 file, (MUST BE IN SAME FOLDER TO PROPERLY RUN)
+            Calls 'theGUI()'method, which internally calls:
+                startworkbook(), openFiles(), VisioLoop(), visioGuts(), and saveExcel()
+                
+    2. Combo Script 2.1.py 
+        This code is the main file.
+        It has two classes, 
+            1. Options
+                Here are all the methods for openning an excel workbook and sorting out the APS into respective categories
+                    Working on importing the sorted info into an Audit excel sheet        
+            2. AutoColor
+                Here is the GUI for the visio coloring that calls functionality from Options depending on user input
+                
+                
+
+                
